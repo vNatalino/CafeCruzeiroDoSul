@@ -1,0 +1,66 @@
+﻿@model PIT.Models.Vendas.ViewModel.Carrinho
+
+<form asp-action="Finalizar" method="post">
+    <h1>Confirmação</h1>
+    <hr />
+    <div class="">
+        <h5>Pedido:</h5>
+        <table class="table table-bordered table-secondary">
+            <thead>
+                <tr>
+                    <th>Item:</th>
+                    <th>Preço:</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.Compras)
+            {
+                <tr>
+                    <td>@item.Quantidade x @item.Produto.Descricao</td>
+                    <td>R$@item.PrecoCompra</td>
+                </tr>
+            }
+            <tr>
+                <td>Total:</td>
+                <td>@Model.ValorTotal</td>
+            </tr>
+        </table>
+    </div>
+    <hr />
+    <div class="">
+        <h5>Forma de pagamento:</h5>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="pagamento" id="retirada" value="retirada" required>
+            <label class="form-check-label" for="retirada">
+                Pagar na retirada
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="pagamento" id="cartao" value="cartao" disabled>
+            <label class="form-check-label" for="cartao">
+                Cartão de crédito
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="pagamento" id="pix" value="pix" disabled>
+            <label class="form-check-label" for="pix">
+                PIX (não disponível)
+            </label>
+        </div>
+
+    </div>
+    <div class="text-center mt-3">
+        <button class="btn btn-primary" type="submit">Finalizar</button>
+    </div>
+
+    <input type="hidden" asp-for="Usuario.UsuarioID" />
+    @for (var i = 0; i < Model.Compras.Count; i++)
+    {
+        <input type="hidden" asp-for="Compras[i].ProdutoID" />
+        <input type="hidden" asp-for="Compras[i].Produto.Preco" />
+        <input type="hidden" asp-for="Compras[i].Produto.ProdutoID" />
+        <input type="hidden" asp-for="Compras[i].Quantidade" />
+        <input type="hidden" asp-for="Usuario.UsuarioID" />
+        <input type="hidden" asp-for="ValorTotal" />
+        <input type="hidden" asp-for="Compras[i].PrecoCompra" />
+    }
+</form>

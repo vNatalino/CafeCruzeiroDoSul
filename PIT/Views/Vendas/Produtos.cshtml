@@ -1,0 +1,54 @@
+﻿@model PIT.Models.Vendas.ViewModel.ListaProdutos
+
+@{
+    ViewData["Title"] = "Lista de Produtos";
+}
+
+<h1>Lista de Produtos</h1>
+<hr />
+<form asp-action="Produtos" method="get">
+    <select class="form-control" name="categoria">
+        <option value="" selected>Selecione uma opção...</option>
+        <option value="Bebida">Bebidas</option>
+        <option value="Bolo">Bolos</option>
+        <option value="Torta">Tortas</option>
+    </select>
+    <br />
+    <button class="btn btn-primary">Filtrar</button>
+</form>
+<hr />
+<div class="row">
+    <input type="hidden" id="contagem" value="0"/>
+    @{int count = 0;
+        foreach (var item in Model.Produtos)
+        {
+        <div class="col-sm-12 col-md-4 mb-3">
+            <div class="card h-100" style="background-color: #8f442b;">
+                <img src="@item.Img" class="card-img-top img-fluid">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Descricao</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="card-text">R$@item.Preco</p>
+                        </div>
+                    </div>
+                    <div class="row text-right mt-1">
+                        <div class="col-4">
+                            <div class="d-inline-flex">
+                                <button class="btn btn-primary" onclick="$(this).next().val(parseInt($(this).next().val()) - 1)">-</button>
+                                <input type="text" class="form-control" id="qtd_@count" name="qtd_@count" value="1" style="width:45px">
+                                <button class="btn btn-primary" onclick="$(this).prev().val(parseInt($(this).prev().val()) + 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <button class="btn btn-primary" onclick="adicionarProduto(@count)">Adicionar ao carrinho</button>
+                            <input type="hidden" id="produto_@count" value="@item.ProdutoID" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            count++;
+        }
+        }
+</div>
